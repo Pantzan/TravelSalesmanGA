@@ -205,7 +205,7 @@ class Tsp:
 		return copies
 
 	# run the program
-	def run(self, iter=1000):
+	def run(self, iter=5000):
 		total = []
 		self.initialize()
 		for i in range(iter):
@@ -213,7 +213,10 @@ class Tsp:
 			best = self.bests[0]
 			total.append(best)
 		# sort the best children list and print the best children as the outcome of the program
-		total.sort(key=operator.itemgetter(0))
+			if best[0] == 388:
+				print("388 found!")
+				break
+		total.sort(key=operator.itemgetter(0))		
 		found = total[0]
 		print("The sortest path under {} iterations is {} with cost {}" .format(iter,found[1],found[0]))
 		from collections import Counter 
