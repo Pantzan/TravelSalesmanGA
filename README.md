@@ -1,4 +1,4 @@
-#Travel Salesman problem using Genetic optimization algorithm written in Python 
+# Travel Salesman problem using Genetic optimization algorithm written in Python 
 Requirements: Python >= 3.4.2
 
 This is problem for an assigment with particular population
