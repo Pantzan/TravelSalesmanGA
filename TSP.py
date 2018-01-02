@@ -14,7 +14,7 @@ class Tsp:
 		self.createCities()
 		self.bests = []
 	
-	# fill the 2D list with the travel distances
+	# fill the 2D list with the travel distances of this problem
 	def createCities(self):
 		self.cities[0][0] = 0
 		self.cities[0][1] = 172
@@ -88,7 +88,7 @@ class Tsp:
 		self.cities[7][6] = 194
 		self.cities[7][7] = 0
 
-	# check if the crossover added any dublicate values.
+	# make sure that the crossover list has not any dublicate values.
 	def isUnique(self, childpos, temp):
 		sample = [0,1,2,3,4,5,6,7]
 		for	i in childpos:
@@ -145,7 +145,7 @@ class Tsp:
 		# sort the  tuple by fitness function
 		bests.sort(key=operator.itemgetter(0))
 		self.bests = bests
-		# keey the 4 best children
+		# keep only4 best children
 		bests = [x[1] for x in bests][:4]
 		return bests
 
@@ -181,12 +181,12 @@ class Tsp:
 		selection = self.selection(mutated)
 		self.parents = selection
 
-	# mutate children under certain property
+	# mutate children under a certain property
 	def mutation(self, children):
 		import random
 		choices = []
 		from copy import deepcopy
-		# hardcopy the children
+		# hardcopy the children list to avoid reference issues
 		copies = deepcopy(children)
 		# check that the above will happen three unique times
 		while len(choices) < 3:
@@ -194,12 +194,12 @@ class Tsp:
 			choice = random.randint(0, len(copies)-1)
 			# calculate a random boundary for the randomizing mutation process
 			boundary = random.randint(0, len(copies)-1)
-			# chech again for multiplied indexes
+			# check again for multiplied indexes
 			if choice not in choices:
 				# if the index is larger that the boundary do the mutation (randomizer)
 				if choice >= boundary:
 					chosen = copies[choice]
-					# shffle the array by change the indexes of the values
+					# shuffle the array by changing the indexes of the values
 					random.shuffle(copies[choice])
 				choices.append(choice)	
 		return copies
@@ -212,7 +212,7 @@ class Tsp:
 			self.evalutation()
 			best = self.bests[0]
 			total.append(best)
-		# sort the best children list and print the best children as the outcome of the program
+		# sort the best children list and print the best children as outcome of this program
 			if best[0] == 388:
 				print("388 found!")
 				break
@@ -222,5 +222,5 @@ class Tsp:
 		from collections import Counter 
 
 
-t = Tsp()
-t.run()
+# t = Tsp()
+# t.run()
