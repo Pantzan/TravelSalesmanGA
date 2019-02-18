@@ -1,11 +1,14 @@
 import random
 import operator
+import random
+from copy import deepcopy
 
 class Tsp:	
+
 	def __init__(self):
+
 		# initialize arguments
 		self.population = 8
-
 		self.parents = []
 		self.children = []
 		# create 2D list
@@ -16,6 +19,7 @@ class Tsp:
 	
 	# fill the 2D list with the travel distances of this problem
 	def createCities(self):
+
 		self.cities[0][0] = 0
 		self.cities[0][1] = 172
 		self.cities[0][2] = 145
@@ -90,11 +94,14 @@ class Tsp:
 
 	# make sure that the crossover list has not any dublicate values.
 	def isUnique(self, childpos, temp):
-		sample = [0,1,2,3,4,5,6,7]
+
+		sample = [k for k in range(8)]
 		for	i in childpos:
+
 			for index, k in enumerate(temp):
 				# if a dublicate value from the first and second part of the list
 				if i == k:
+
 					del temp[index]
 					for s in sample:
 						t = childpos + temp
@@ -104,8 +111,9 @@ class Tsp:
 							break
 		return temp
 
-	# do crossover between two parents 
+	# do a crossover action between two parents 
 	def crossover(self, v1, v2, ratio=3):
+
 		rem_char = len(v1)-ratio
 		clone1 = v1.copy()
 		clone2 = v2.copy()
@@ -118,23 +126,23 @@ class Tsp:
 		# check for dublicates
 		unique1 = self.isUnique(child1pos, child2suf)
 		unique2 = self.isUnique(child2pos, child1suf)
-
-		# create child
+		# create children
 		child1 = child1pos + unique1
 		child2 = child2pos + unique2
-
 		# return children
 		return child1, child2
 
 	# calculate fitness for each route
 	def fitness(self, child):
-		sum = 0
+
+		result = 0
 		for i in range(0, len(child)-2):
-			sum += self.cities[ child[i] ] [ child[i+1] ]
-		return sum
+			result += self.cities[ child[i] ] [ child[i+1] ]
+		return result
 
 	# sort children and keep the 4 best
 	def selection(self, lists):
+
 		bests = []
 		self.bests = []
 		for i in lists:
@@ -145,22 +153,23 @@ class Tsp:
 		# sort the  tuple by fitness function
 		bests.sort(key=operator.itemgetter(0))
 		self.bests = bests
-		# keep only4 best children
+		# keep only 4 best children
 		bests = [x[1] for x in bests][:4]
 		return bests
 
 	# initialize the class program by creating parents
 	def initialize(self):
-		for i in range(1, self.population//2+1):
+
+		for i in range(self.population//2):
 			vector = random.sample(range(8), 8)
 			self.parents.append(vector)
 
 	# evaluate the GA algorithm
 	def evalutation(self):
+
 		self.children = []
 		length = len(self.parents)
 		ratio = random.randint(1, length)
-
 		# crossover parents and create 2Xparents list of children
 		crossovered1 = self.crossover(self.parents[0], self.parents[1], ratio)
 		crossovered2 = self.crossover(self.parents[1], self.parents[2], ratio)
@@ -174,7 +183,6 @@ class Tsp:
 		self.children.append(crossovered4[1])
 		self.children.append(crossovered4[0])
 		self.children.append(crossovered4[1])
-		
 		# mutate children by randomize them
 		mutated = self.mutation(self.children)
 		# get the sorted selection
@@ -183,9 +191,8 @@ class Tsp:
 
 	# mutate children under a certain property
 	def mutation(self, children):
-		import random
+		
 		choices = []
-		from copy import deepcopy
 		# hardcopy the children list to avoid reference issues
 		copies = deepcopy(children)
 		# check that the above will happen three unique times
@@ -201,11 +208,13 @@ class Tsp:
 					chosen = copies[choice]
 					# shuffle the array by changing the indexes of the values
 					random.shuffle(copies[choice])
-				choices.append(choice)	
+				choices.append(choice)
+
 		return copies
 
 	# run the program
 	def run(self, iter=5000):
+
 		total = []
 		self.initialize()
 		for i in range(iter):
@@ -219,8 +228,7 @@ class Tsp:
 		total.sort(key=operator.itemgetter(0))		
 		found = total[0]
 		print("The sortest path under {} iterations is {} with cost {}" .format(iter,found[1],found[0]))
-		from collections import Counter 
 
 
-# t = Tsp()
-# t.run()
+t = Tsp()
+t.run()
